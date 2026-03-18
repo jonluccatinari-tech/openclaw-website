@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw Mastery Kit - Complete Setup Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #050810; --bg2: #0b0f1a; --card: #16161d; --accent: #6c7fff; --accent2: #a78bfa; --green: #10b981; --text: #f4f4f5; --text2: #9ca3af; --border: rgba(255,255,255,0.08); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        
+        header { padding: 20px; text-align: center; background: linear-gradient(180deg, #0f1420 0%, transparent 100%); }
+        header h1 { font-size: 14px; color: var(--text2); font-weight: 500; }
+        
+        .hero { text-align: center; padding: 60px 20px; position: relative; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(108,127,255,0.1) 0%, transparent 70%); pointer-events: none; }
+        
+        .badge { display: inline-block; background: rgba(108,127,255,0.1); border: 1px solid rgba(108,127,255,0.25); color: var(--accent2); padding: 6px 16px; border-radius: 100px; font-size: 12px; font-weight: 600; margin-bottom: 20px; }
+        
+        h1 { font-size: clamp(32px, 6vw, 48px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 16px; }
+        h1 span { background: linear-gradient(135deg, #6c7fff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .subtitle { font-size: 18px; color: var(--text2); max-width: 500px; margin: 0 auto 30px; }
+        
+        .price { font-size: 48px; font-weight: 800; margin-bottom: 8px; }
+        .price span { font-size: 20px; color: var(--text2); font-weight: 400; }
+        .price-original { font-size: 24px; color: var(--text2); text-decoration: line-through; margin-bottom: 20px; }
+        
+        .buy-btn { display: inline-block; background: var(--accent); color: white; padding: 18px 48px; border-radius: 12px; font-size: 18px; font-weight: 700; text-decoration: none; box-shadow: 0 0 40px rgba(108,127,255,0.3); transition: all 0.2s; }
+        .buy-btn:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(108,127,255,0.5); }
+        
+        .guarantee { margin-top: 16px; font-size: 13px; color: var(--text2); }
+        
+        .section { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+        .section-title { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 40px; }
+        
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .feature { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: left; }
+        .feature-icon { font-size: 32px; margin-bottom: 12px; }
+        .feature h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .feature p { color: var(--text2); font-size: 14px; }
+        
+        .curriculum { background: var(--card); border-radius: 16px; padding: 32px; margin: 0 16px; }
+        .curriculum h3 { font-size: 20px; margin-bottom: 20px; }
+        .module { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+        .module:last-child { border: none; }
+        .module-num { width: 40px; height: 40px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .module h4 { font-size: 16px; margin-bottom: 4px; }
+        .module p { font-size: 13px; color: var(--text2); }
+        
+        .testimonials { display: grid; gap: 16px; }
+        .testimonial { background: var(--card); border-radius: 16px; padding: 24px; border: 1px solid var(--border); }
+        .testimonial p { font-size: 15px; margin-bottom: 16px; }
+        .testimonial-author { display: flex; align-items: center; gap: 12px; }
+        .testimonial-avatar { width: 40px; height: 40px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .testimonial-name { font-weight: 600; font-size: 14px; }
+        
+        .faq { max-width: 600px; margin: 0 auto; }
+        .faq-item { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 12px; border: 1px solid var(--border); }
+        .faq-question { font-weight: 600; margin-bottom: 8px; }
+        .faq-answer { color: var(--text2); font-size: 14px; }
+        
+        .cta { text-align: center; padding: 80px 20px; background: linear-gradient(180deg, transparent, rgba(108,127,255,0.05)); }
+        
+        footer { text-align: center; padding: 40px 20px; color: var(--text2); font-size: 13px; border-top: 1px solid var(--border); }
+        
+        @media(max-width: 600px) {
+            .buy-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🛒 OpenClaw Store</h1>
+    </header>
+
+    <section class="hero">
+        <div class="badge">🎓 Video Course</div>
+        <h1>OpenClaw <span>Mastery Kit</span></h1>
+        <p class="subtitle">2+ hours of step-by-step videos + PDF command guide. Everything you need to master your personal AI assistant.</p>
+        
+        <div class="price-original">$97</div>
+        <div class="price">$47<span>/one-time</span></div>
+        
+        <a href="https://buy.stripe.com/your-link-here" class="buy-btn">Buy Now — Instant Access</a>
+        <p class="guarantee">🔒 Secure payment • ⭐ 30-day money-back guarantee</p>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">What's Included</h2>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🎥</div>
+                <h3>2+ Hour Video Course</h3>
+                <p>Step-by-step walkthroughs from installation to advanced features. Watch and follow along.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📄</div>
+                <h3>PDF Command Guide</h3>
+                <p>All commands in a printable reference sheet. Never forget a command again.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🧠</div>
+                <h3>Self-Improving Skill</h3>
+                <p>Learn to set up the AI that learns from you and gets smarter over time.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔌</div>
+                <h3>Skill Install Guide</h3>
+                <p>How to install and configure 10+ essential skills (1Password, Calendar, etc).</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💬</div>
+                <h3>Multi-Channel Setup</h3>
+                <p>Connect to WhatsApp, Telegram, Discord, Slack and more.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎙️</div>
+                <h3>Voice & Vision Setup</h3>
+                <p>Get voice conversations and vision capabilities working.</p>
+            </div>
+        </div>
+    </section>
+
+,     <section class="section">
+        <h2 class="section-title">Course Curriculum</h2>
+        <div class="curriculum">
+            <h3>What You'll Learn</h3>
+            <div class="module">
+                <div class="module-num">1</div>
+                <div><h4>Getting Started</h4><p>Installation, requirements, and first-time setup</p></div>
+            </div>
+            <div class="module">
+                <div class="module-num">2</div>
+                <div><h4>Core Configuration</h4><p>Models, providers, and essential settings</p></div>
+            </div>
+            <div class="module">
+                <div class="module-num">3</div>
+                <div><h4>Channel Connections</h4><p>WhatsApp, Telegram, Discord, Slack setup</p></div>
+            </div>
+            <div class="module">
+                <div class="module-num">4</div>
+                <div><h4>Essential Skills</h4><p>Install and configure 10+ must-have skills</p></div>
+            </div>
+            <div class="module">
+                <div class="module-num">5</div>
+                <div><h4>Self-Improving AI</h4><p>Set up memory that makes AI smarter over time</p></div>
+            </div>
+            <div class="module">
+                <div class="module-num">6</div>
+                <div><h4>Voice & Advanced</h4><p>Voice commands, vision, and pro tips</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Who Is This For?</h2>
+        <div class="features">
+            <div class="feature"><h3>🤓 Developers</h3><p>Want to customize and extend OpenClaw</p></div>
+            <div class="feature"><h3>💼 Professionals</h3><p>Need AI assistant for work productivity</p></div>
+            <div class="feature"><h3>🏠 Home Users</h3><p>Want smart home & personal automation</p></div>
+            <div class="feature"><h3>🚀 Beginners</h3><p>Want guided setup without technical headaches</p></div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq">
+            <div class="faq-item">
+                <div class="faq-question">Is this the official OpenClaw course?</div>
+                <div class="faq-answer">No, this is an unofficial guide. OpenClaw is free and open source. This course provides structured learning to speed up your setup.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How do I access after purchase?</div>
+                <div class="faq-answer">Immediately after payment, you'll get a download link. You can also access via the confirmation email.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Do I need coding experience?</div>
+                <div class="faq-answer">No! This course is designed for beginners. We explain everything in plain English.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Is there a refund?</div>
+                <div class="faq-answer">Yes! 30-day money-back guarantee. No questions asked.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2 style="font-size: 32px; margin-bottom: 16px;">Ready to Master OpenClaw?</h2>
+        <p style="color: var(--text2); margin-bottom: 30px;">Join others who've transformed their workflow with AI.</p>
+        <a href="https://buy.stripe.com/your-link-here" class="buy-btn">Get Started — $47</a>
+    </section>
+
+    <footer>
+        <p>© 2026 OpenClaw Mastery Kit. Not affiliated with OpenClaw.</p>
+        <p style="margin-top: 8px;"><a href="mailto:support@yourdomain.com" style="color: var(--accent);">Contact Support</a></p>
+    </footer>
+</body>
+</html>
