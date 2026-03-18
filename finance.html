@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="manifest" href="/openclaw-website/manifest.json">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💰 Finance Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -41,11 +40,10 @@
         .list-item-change.up { color: var(--green); }
         .list-item-change.down { color: var(--red); }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text2); text-decoration: none; font-size: 11px; padding: 8px 16px; border-radius: 10px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text2); text-decoration: none; font-size: 11px; padding: 8px 16px; border-radius: 10px; cursor: pointer; border: none; background: none; }
         .nav-item.active { color: var(--accent); background: rgba(99,102,241,0.15); }
         .nav-item span { font-size: 20px; }
         
-        /* Modal */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: flex-end; justify-content: center; z-index: 200; }
         .modal-overlay.active { display: flex; }
         .modal { background: var(--card); width: 100%; max-width: 400px; border-radius: 24px 24px 0 0; padding: 24px; animation: slideUp 0.3s; }
@@ -63,52 +61,111 @@
         
         .empty-state { text-align: center; padding: 40px 20px; color: var(--text2); }
         .empty-state span { font-size: 40px; display: block; margin-bottom: 12px; }
+        
+        .view { display: none; }
+        .view.active { display: block; }
+        
+        .setting-item { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); cursor: pointer; }
+        .setting-item-left { display: flex; align-items: center; gap: 12px; }
+        .setting-item-icon { font-size: 20px; }
+        .setting-item-title { font-weight: 600; font-size: 14px; }
+        .setting-item-sub { font-size: 12px; color: var(--text2); }
+        
+        .delete-btn { background: var(--red); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; cursor: pointer; margin-left: 8px; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>💰 Finance Tracker</h1>
-        <p id="date-display"></p>
-    </header>
-
-    <div class="card">
-        <div class="card-header"><span class="card-title">Net Worth</span><span>💎</span></div>
+    <!-- HOME VIEW -->
+    <div id="view-home" class="view active">
+        <header><h1>💰 Finance Tracker</h1><p id="date-display"></p></header>
+        <div class="card"><div class="card-header"><span class="card-title">Net Worth</span><span>💎</span></div>
         <div class="net-worth" id="net-worth">$0</div>
         <div class="change" id="net-worth-change">+$0 this month</div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Income (Week)</div><div class="stat-value green" id="weekly-income">$0</div></div>
+            <div class="stat-card"><div class="stat-label">Expenses (Week)</div><div class="stat-value red" id="weekly-expenses">$0</div></div>
+            <div class="stat-card"><div class="stat-label">Investments</div><div class="stat-value" id="investment-value">$0</div></div>
+            <div class="stat-card"><div class="stat-label">Savings Rate</div><div class="stat-value green" id="savings-rate">0%</div></div>
+        </div>
+        <div class="actions" style="margin-top: 20px;">
+            <button class="action-btn" onclick="openModal('income')"><span>💵</span>Add Income</button>
+            <button class="action-btn" onclick="openModal('expense')"><span>🛒</span>Add Expense</button>
+            <button class="action-btn secondary" onclick="openModal('investment')"><span>📈</span>Add Invest</button>
+        </div>
+        <div class="section">
+            <div class="section-title">Recent Transactions</div>
+            <div id="transactions-list"></div>
+        </div>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">Income (Week)</div><div class="stat-value green" id="weekly-income">$0</div></div>
-        <div class="stat-card"><div class="stat-label">Expenses (Week)</div><div class="stat-value red" id="weekly-expenses">$0</div></div>
-        <div class="stat-card"><div class="stat-label">Investments</div><div class="stat-value" id="investment-value">$0</div></div>
-        <div class="stat-card"><div class="stat-label">Savings Rate</div><div class="stat-value green" id="savings-rate">0%</div></div>
+    <!-- INVEST VIEW -->
+    <div id="view-invest" class="view">
+        <header><h1>📊 Investments</h1><p>Your portfolio</p></header>
+        <div class="card">
+            <div class="card-header"><span class="card-title">Total Value</span><span>📈</span></div>
+            <div class="net-worth" id="invest-total">$0</div>
+            <div class="change" id="invest-gain">+$0 (0%)</div>
+        </div>
+        <div class="actions" style="margin-top: 20px;">
+            <button class="action-btn" onclick="openModal('investment')"><span>➕</span>Add Investment</button>
+            <button class="action-btn secondary" onclick="refreshPrices()"><span>🔄</span>Refresh Prices</button>
+        </div>
+        <div class="section">
+            <div class="section-title">Holdings</div>
+            <div id="portfolio-list"></div>
+        </div>
     </div>
 
-    <div class="actions" style="margin-top: 20px;">
-        <button class="action-btn" onclick="openModal('income')"><span>💵</span>Add Income</button>
-        <button class="action-btn" onclick="openModal('expense')"><span>🛒</span>Add Expense</button>
-        <button class="action-btn secondary" onclick="openModal('investment')"><span>📈</span>Add Invest</button>
+    <!-- BUDGET VIEW -->
+    <div id="view-budget" class="view">
+        <header><h1>📝 Budget</h1><p>Track your spending</p></header>
+        <div class="card">
+            <div class="card-header"><span class="card-title">This Month</span><span>📅</span></div>
+            <div class="stats-grid">
+                <div><div class="stat-label">Income</div><div class="stat-value green" id="budget-income">$0</div></div>
+                <div><div class="stat-label">Expenses</div><div class="stat-value red" id="budget-expenses">$0</div></div>
+            </div>
+        </div>
+        <div class="actions" style="margin-top: 20px;">
+            <button class="action-btn" onclick="openModal('income')"><span>💵</span>Income</button>
+            <button class="action-btn" onclick="openModal('expense')"><span>🛒</span>Expense</button>
+        </div>
+        <div class="section">
+            <div class="section-title">By Category</div>
+            <div id="category-list"></div>
+        </div>
     </div>
 
-    <div class="section">
-        <div class="section-title">Portfolio</div>
-        <div class="tabs"><button class="tab active">All</button><button class="tab">ETFs</button><button class="tab">Shares</button><button class="tab">Crypto</button></div>
-        <div id="portfolio-list"></div>
+    <!-- SETTINGS VIEW -->
+    <div id="view-settings" class="view">
+        <header><h1>⚙️ Settings</h1><p>Customize your app</p></header>
+        <div class="section">
+            <div class="setting-item" onclick="openModal('clear')">
+                <div class="setting-item-left"><span class="setting-item-icon">🗑️</span><div><div class="setting-item-title">Clear All Data</div><div class="setting-item-sub">Delete all transactions</div></div></div>
+            </div>
+            <div class="setting-item" onclick="exportData()">
+                <div class="setting-item-left"><span class="setting-item-icon">📤</span><div><div class="setting-item-title">Export Data</div><div class="setting-item-sub">Download as JSON</div></div></div>
+            </div>
+            <div class="setting-item" onclick="document.getElementById('import-file').click()">
+                <div class="setting-item-left"><span class="setting-item-icon">📥</span><div><div class="setting-item-title">Import Data</div><div class="setting-item-sub">Restore from backup</div></div></div>
+                <input type="file" id="import-file" style="display:none" onchange="importData(this)">
+            </div>
+            <div class="setting-item">
+                <div class="setting-item-left"><span class="setting-item-icon">👥</span><div><div class="setting-item-title">Share with Friends</div><div class="setting-item-sub">Coming soon</div></div></div>
+            </div>
+        </div>
     </div>
 
-    <div class="section">
-        <div class="section-title">Recent Transactions</div>
-        <div id="transactions-list"></div>
-    </div>
-
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active"><span>🏠</span>Home</a>
-        <a href="#" class="nav-item"><span>📊</span>Invest</a>
-        <a href="#" class="nav-item"><span>📝</span>Budget</a>
-        <a href="#" class="nav-item"><span>⚙️</span>Settings</a>
+        <button class="nav-item active" onclick="showView('home',this)"><span>🏠</span>Home</button>
+        <button class="nav-item" onclick="showView('invest',this)"><span>📊</span>Invest</button>
+        <button class="nav-item" onclick="showView('budget',this)"><span>📝</span>Budget</button>
+        <button class="nav-item" onclick="showView('settings',this)"><span>⚙️</span>Settings</button>
     </nav>
 
-    <!-- Modal -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="modal">
         <div class="modal">
             <h2 id="modal-title">Add Transaction</h2>
@@ -123,24 +180,20 @@
     </div>
 
     <script>
-        // Data store
         let data = { income: [], expenses: [], investments: [] };
         let currentType = '';
         
-        // Load from localStorage
         function loadData() {
             const saved = localStorage.getItem('financeData');
             if (saved) data = JSON.parse(saved);
             render();
         }
         
-        // Save to localStorage
         function saveToStorage() {
             localStorage.setItem('financeData', JSON.stringify(data));
             render();
         }
         
-        // Render everything
         function render() {
             const income = data.income.reduce((a,b) => a + b.amount, 0);
             const expenses = data.expenses.reduce((a,b) => a + b.amount, 0);
@@ -157,7 +210,18 @@
             document.getElementById('investment-value').textContent = '$' + investments.toLocaleString();
             document.getElementById('savings-rate').textContent = savingsRate.toFixed(0) + '%';
             
-            // Portfolio
+            // Invest view
+            document.getElementByinvest-total').textContent = '$' + investments.toLocaleString();
+            const gain = investments - invested;
+            const gainPct = invested > 0 ? (gain / invested * 100) : 0;
+            document.getElementById('invest-gain').textContent = (gain >= 0 ? '+' : '') + '$' + gain.toLocaleString() + ' (' + gainPct.toFixed(1) + '%)';
+            document.getElementById('invest-gain').style.color = gain >= 0 ? 'var(--green)' : 'var(--red)';
+            
+            // Budget view
+            document.getElementById('budget-income').textContent = '$' + income.toLocaleString();
+            document.getElementById('budget-expenses').textContent = '$' + expenses.toLocaleString();
+            
+            // Portfolio list
             const pl = document.getElementById('portfolio-list');
             if (data.investments.length === 0) {
                 pl.innerHTML = '<div class="empty-state"><span>📈</span>No investments yet</div>';
@@ -165,7 +229,7 @@
                 pl.innerHTML = data.investments.map((inv, i) => {
                     const val = inv.quantity * inv.currentPrice;
                     const gain = ((inv.currentPrice - inv.buyPrice) / inv.buyPrice * 100);
-                    return '<div class="list-item"><div class="list-item-left"><div class="list-item-icon">📈</div><div><div class="list-item-title">'+inv.name+'</div><div class="list-item-sub">'+inv.quantity+' @ $'+inv.buyPrice+'</div></div></div><div class="list-item-right"><div class="list-item-value">$'+val.toLocaleString()+'</div><div class="list-item-change '+(gain>=0?'up':'down')+'">'+(gain>=0?'+':'')+gain.toFixed(1)+'%</div></div></div>';
+                    return '<div class="list-item"><div class="list-item-left"><div class="list-item-icon">📈</div><div><div class="list-item-title">'+inv.name+'</div><div class="list-item-sub">'+inv.quantity+' @ $'+inv.buyPrice+'</div></div></div><div class="list-item-right"><div class="list-item-value">$'+val.toLocaleString()+'</div><div class="list-item-change '+(gain>=0?'up':'down')+'">'+(gain>=0?'+':'')+gain.toFixed(1)+'%</div><button class="delete-btn" onclick="deleteInvest('+i+')">✕</button></div></div>';
                 }).join('');
             }
             
@@ -181,6 +245,23 @@
                     return '<div class="list-item"><div class="list-item-left"><div class="list-item-icon">'+icon+'</div><div><div class="list-item-title">'+t.desc+'</div><div class="list-item-sub">'+new Date(t.date).toLocaleDateString()+'</div></div></div><div class="list-item-right"><div class="list-item-value '+(t.type==='income'?'green':'red')+'">'+val+'</div></div></div>';
                 }).join('');
             }
+            
+            // Categories
+            const cats = {};
+            data.expenses.forEach(e => { cats[e.category||'Other'] = (cats[e.category||'Other']||0) + e.amount; });
+            const cl = document.getElementById('category-list');
+            if (Object.keys(cats).length === 0) {
+                cl.innerHTML = '<div class="empty-state"><span>📊</span>No expenses yet</div>';
+            } else {
+                cl.innerHTML = Object.entries(cats).map(([cat, amt]) => '<div class="list-item"><div class="list-item-left"><div class="list-item-icon">📊</div><div class="list-item-title">'+cat+'</div></div><div class="list-item-right"><div class="list-item-value red">$'+amt.toLocaleString()+'</div></div></div>').join('');
+            }
+        }
+        
+        function showView(view, btn) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + view).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
         }
         
         function openModal(type) {
@@ -195,7 +276,7 @@
             } else {
                 cat.style.display = 'none';
             }
-            document.getElementById('modal-title').textContent = type === 'income' ? 'Add Income' : type === 'expense' ? 'Add Expense' : 'Add Investment';
+            document.getElementById('modal-title').textContent = type === 'income' ? 'Add Income' : type === 'expense' ? 'Add Expense' : type === 'clear' ? 'Clear All Data?' : 'Add Investment';
         }
         
         function closeModal() {
@@ -203,20 +284,65 @@
         }
         
         function saveData() {
+            if (currentType === 'clear') {
+                if (confirm('Delete all data? This cannot be undone.')) {
+                    data = { income: [], expenses: [], investments: [] };
+                    saveToStorage();
+                }
+                closeModal();
+                return;
+            }
+            
             const amount = parseFloat(document.getElementById('modal-amount').value);
             const desc = document.getElementById('modal-desc').value || 'Transaction';
+            const category = document.getElementById('modal-category').value;
             if (!amount) return alert('Please enter an amount');
             
             if (currentType === 'income') {
                 data.income.push({ amount, desc, date: new Date().toISOString() });
             } else if (currentType === 'expense') {
-                data.expenses.push({ amount, desc, date: new Date().toISOString() });
+                data.expenses.push({ amount, desc, category, date: new Date().toISOString() });
             } else {
                 data.investments.push({ name: desc, quantity: 1, buyPrice: amount, currentPrice: amount });
             }
             
             saveToStorage();
             closeModal();
+        }
+        
+        function deleteInvest(i) {
+            if (confirm('Delete this investment?')) {
+                data.investments.splice(i, 1);
+                saveToStorage();
+            }
+        }
+        
+        function refreshPrices() {
+            alert('Price refresh would connect to a stock API. Coming soon!');
+        }
+        
+        function exportData() {
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'finance-backup-' + new Date().toISOString().split('T')[0] + '.json';
+            a.click();
+        }
+        
+        function importData(input) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    data = JSON.parse(e.target.result);
+                    saveToStorage();
+                    alert('Data imported!');
+                } catch(err) {
+                    alert('Invalid file');
+                }
+            };
+            reader.readAsText(file);
         }
         
         document.getElementById('date-display').textContent = new Date().toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
