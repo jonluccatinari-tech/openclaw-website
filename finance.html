@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💰 Finance Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --card: #16161d;
+            --card2: #1e1e28;
+            --accent: #6366f1;
+            --accent2: #818cf8;
+            --green: #10b981;
+            --red: #ef4444;
+            --text: #f4f4f5;
+            --text2: #a1a1aa;
+            --border: rgba(255,255,255,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        header {
+            background: linear-gradient(180deg, #13131a 0%, transparent 100%);
+            padding: 20px 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+        header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+        header p { color: var(--text2); font-size: 13px; margin-top: 4px; }
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 0 16px 16px;
+            border: 1px solid var(--border);
+        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .card-title { font-size: 13px; color: var(--text2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .net-worth { font-size: 42px; font-weight: 800; letter-spacing: -1px; color: var(--green); }
+        .change { font-size: 14px; display: flex; align-items: center; gap: 6px; margin-top: 8px; color: var(--green); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 16px; }
+        .stat-card { background: var(--card); border-radius: 14px; padding: 16px; border: 1px solid var(--border); }
+        .stat-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+        .stat-value { font-size: 22px; font-weight: 700; }
+        .stat-value.green { color: var(--green); }
+        .stat-value.red { color: var(--red); }
+        .actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 0 16px; }
+        .action-btn {
+            background: var(--accent);
+            border: none;
+            border-radius: 12px;
+            padding: 16px 12px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .action-btn.secondary { background: var(--card2); }
+        .action-btn span { font-size: 24px; }
+        .section { margin-top: 24px; padding: 0 16px; }
+        .section-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .list-item {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+        }
+        .list-item-left { display: flex; align-items: center; gap: 12px; }
+        .list-item-icon { 
+            width: 40px; height: 40px; border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
+            background: var(--card2);
+        }
+        .list-item-title { font-weight: 600; font-size: 15px; }
+        .list-item-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+        .list-item-right { text-align: right; }
+        .list-item-value { font-weight: 700; font-size: 15px; }
+        .list-item-change { font-size: 12px; margin-top: 2px; }
+        .list-item-change.up { color: var(--green); }
+        .list-item-change.down { color: var(--red); }
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(10,10,15,0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            display: flex; justify-content: space-around; padding: 12px 0;
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            color: var(--text2); text-decoration: none; font-size: 11px;
+            padding: 8px 16px; border-radius: 10px;
+        }
+        .nav-item.active { color: var(--accent); background: rgba(99,102,241,0.15); }
+        .nav-item span { font-size: 22px; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; }
+        .tab { 
+            white-space: nowrap; padding: 10px 20px; border-radius: 100px; 
+            font-size: 13px; font-weight: 600; background: var(--card); 
+            color: var(--text2); border: none; cursor: pointer;
+        }
+        .tab.active { background: var(--accent); color: white; }
+        .progress-ring { width: 120px; height: 120px; margin: 0 auto 16px; position: relative; }
+        .progress-ring svg { transform: rotate(-90deg); }
+        .progress-ring circle { fill: none; stroke-width: 8; }
+        .progress-ring .bg { stroke: var(--card2); }
+        .progress-ring .progress { stroke: var(--accent); stroke-linecap: round; stroke-dasharray: 314; stroke-dashoffset: 78; }
+        .progress-ring-value {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        .progress-ring-value .pct { font-size: 28px; font-weight: 800; }
+        .progress-ring-value .lbl { font-size: 11px; color: var(--text2); }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>💰 Finance Tracker</h1>
+        <p id="date-display"></p>
+    </header>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Net Worth</span>
+            <span>💎</span>
+        </div>
+        <div class="net-worth">$14,250</div>
+        <div class="change">↑ 12.5% this month</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Income (Week)</div>
+            <div class="stat-value green">$850</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Expenses (Week)</div>
+            <div class="stat-value red">$420</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Investments</div>
+            <div class="stat-value">$14,250</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Savings Rate</div>
+            <div class="stat-value green">51%</div>
+        </div>
+    </div>
+
+    <div class="actions" style="margin-top: 20px;">
+        <button class="action-btn"><span>💵</span>Add Income</button>
+        <button class="action-btn"><span>🛒</span>Add Expense</button>
+        <button class="action-btn secondary"><span>📈</span>Add Invest</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Portfolio</div>
+        <div class="tabs">
+            <button class="tab active">All</button>
+            <button class="tab">ETFs</button>
+            <button class="tab">Shares</button>
+            <button class="tab">Crypto</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Holdings</div>
+        <div class="list-item">
+            <div class="list-item-left"><div class="list-item-icon">🏦</div>
+                <div><div class="list-item-title">Vanguard ETF (VAS)</div><div class="list-item-sub">50 shares @ $150</div></div>
+            </div>
+            <div class="list-item-right"><div class="list-item-value">$7,500</div><div class="list-item-change up">+12.5%</div></div>
+        </div>
+        <div class="list-item">
+            <div class="list-item-left"><div class="list-item-icon">🇺🇸</div>
+                <div><div class="list-item-title">iShares (IAA)</div><div class="list-item-sub">100 shares @ $45</div></div>
+            </div>
+            <div class="list-item-right"><div class="list-item-value">$4,500</div><div class="list-item-change up">+8.2%</div></div>
+        </div>
+        <div class="list-item">
+            <div class="list-item-left"><div class="list-item-icon">🪙</div>
+                <div><div class="list-item-title">Bitcoin (BTC)</div><div class="list-item-sub">0.05 BTC</div></div>
+            </div>
+            <div class="list-item-right"><div class="list-item-value">$2,250</div><div class="list-item-change down">-3.1%</div></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Recent</div>
+        <div class="list-item">
+            <div class="list-item-left"><div class="list-item-icon">💼</div>
+                <div><div class="list-item-title">Weekly Salary</div><div class="list-item-sub">Today</div></div>
+            </div>
+            <div class="list-item-right"><div class="list-item-value green">+$850</div></div>
+        </div>
+        <div class="list-item">
+            <div class="list-item-left"><div class="list-item-icon">🍔</div>
+                <div><div class="list-item-title">Food & Dining</div><div class="list-item-sub">Yesterday</div></div>
+            </div>
+            <div class="list-item-right"><div class="list-item-value red">-$42.50</div></div>
+        </div>
+        <div class="list-item">
+            <div class="list-item-left"><div class="list-item-icon">🏠</div>
+                <div><div class="list-item-title">Rent</div><div class="list-item-sub">Mar 15</div></div>
+            </div>
+            <div class="list-item-right"><div class="list-item-value red">-$1,200</div></div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+        <div class="card-header"><span class="card-title">Monthly Goal</span><span>🎯</span></div>
+        <div class="progress-ring">
+            <svg width="120" height="120"><circle class="bg" cx="60" cy="60" r="50"/><circle class="progress" cx="60" cy="60" r="50"/></svg>
+            <div class="progress-ring-value"><div class="pct">75%</div><div class="lbl">of $2,000</div></div>
+        </div>
+        <div style="text-align: center; color: var(--text2); font-size: 14px;">$1,500 saved this month</div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active"><span>🏠</span>Home</a>
+        <a href="#" class="nav-item"><span>📊</span>Invest</a>
+        <a href="#" class="nav-item"><span>📝</span>Budget</a>
+        <a href="#" class="nav-item"><span>⚙️</span>Settings</a>
+    </nav>
+
+    <script>
+        document.getElementById('date-display').textContent = new Date().toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    </script>
+</body>
+</html>
