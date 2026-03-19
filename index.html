@@ -3,732 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw Mastery Kit - Complete Setup Course</title>
+    <title>OpenClaw Mastery Kit - Complete Video Course</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg: #0a0a0f;
-            --bg2: #0f131f;
-            --card: #16161d;
-            --card2: #1e1e28;
-            --accent: #6c7fff;
-            --accent2: #a78bfa;
+            --card: #141419;
+            --accent: #6366f1;
+            --accent2: #818cf8;
             --green: #10b981;
-            --red: #ef4444;
-            --orange: #f59e0b;
-            --text: #f4f4f5;
+            --text: #fff;
             --text2: #9ca3af;
-            --border: rgba(255,255,255,0.08);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
-            overflow-x: hidden;
         }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         
         /* Header */
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(10,10,15,0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 18px 40px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .logo { font-size: 20px; font-weight: 800; color: var(--accent); }
-        .nav { display: flex; gap: 32px; }
-        .nav a { color: var(--text2); text-decoration: none; font-size: 14px; font-weight: 500; }
-        .nav a:hover { color: var(--text); }
-        .nav-cta {
-            background: var(--accent);
-            color: white;
-            padding: 10px 22px;
-            border-radius: 8px;
+        .logo { font-size: 22px; font-weight: 800; }
+        .logo span { color: var(--accent); }
+        .nav a {
+            color: var(--text2);
             text-decoration: none;
-            font-weight: 600;
+            margin-left: 30px;
             font-size: 14px;
+            font-weight: 500;
         }
+        .nav a:hover { color: var(--text); }
         
         /* Hero */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             text-align: center;
-            padding: 120px 20px 60px;
-            position: relative;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -200px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(ellipse, rgba(108,127,255,0.15) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: -1;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(108,127,255,0.1);
-            border: 1px solid rgba(108,127,255,0.25);
-            color: var(--accent2);
-            padding: 8px 20px;
-            border-radius: 100px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 32px;
+            padding: 80px 0 60px;
         }
         .hero h1 {
-            font-size: clamp(42px, 7vw, 64px);
+            font-size: clamp(36px, 5vw, 56px);
             font-weight: 800;
-            letter-spacing: -2px;
-            line-height: 1.1;
             margin-bottom: 20px;
+            line-height: 1.1;
         }
-        .hero h1 span {
-            background: linear-gradient(135deg, #6c7fff 0%, #a78bfa 50%, #f252b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hero-subtitle {
-            font-size: 20px;
+        .hero h1 span { color: var(--accent); }
+        .hero p {
+            font-size: 18px;
             color: var(--text2);
             max-width: 600px;
             margin: 0 auto 40px;
-            line-height: 1.6;
         }
         
-        /* Video Preview */
-        .video-preview {
-            width: 100%;
-            max-width: 800px;
-            height: 400px;
-            background: linear-gradient(45deg, #1e1e28, #16161d);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            margin: 40px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .video-preview::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(108,127,255,0.1), transparent);
-            animation: rotate 20s linear infinite;
-        }
-        .video-preview-inner {
-            position: relative;
-            z-index: 2;
-            background: rgba(10,10,15,0.9);
-            width: calc(100% - 16px);
-            height: calc(100% - 16px);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-        @keyframes rotate { 100% { transform: rotate(360deg); } }
-        .play-btn {
-            width: 80px;
-            height: 80px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            box-shadow: 0 0 40px rgba(108,127,255,0.5);
-        }
-        .video-text { font-size: 14px; color: var(--text2); }
-        
-        /* Price & CTA */
-        .price-box {
-            background: var(--card);
-            border: 2px solid var(--accent);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 800px;
-            margin: 40px auto;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .price-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--orange);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 700;
-            transform: rotate(5deg);
-        }
-            font-size: 24px;
-            color: var(--text2);
-            text-decoration: line-through;
-            margin-bottom: 8px;
-        }
-        .price-current {
-            font-size: 72px;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-        .price-period {
-            font-size: 18px;
-            color: var(--text2);
-            margin-bottom: 32px;
-        }
-        .price-cta {
+        /* CTA Button */
+        .cta-btn {
             display: inline-block;
             background: var(--accent);
             color: white;
+            padding: 16px 40px;
+            border-radius: 10px;
             text-decoration: none;
-            padding: 24px 64px;
-            border-radius: 16px;
-            font-size: 20px;
             font-weight: 700;
-            box-shadow: 0 0 60px rgba(108,127,255,0.4);
-            transition: all 0.2s;
-            margin-bottom: 16px;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .price-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 80px rgba(108,127,255,0.6);
-        }
-        .guarantee {
-            font-size: 14px;
-            color: var(--text2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99,102,241,0.4);
         }
         
-        /* Countdown */
-        .countdown {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin: 40px 0;
-        }
-        .countdown-item {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 20px;
-            min-width: 80px;
-            text-align: center;
-        }
-        .countdown-number {
+        /* Section */
+        .section { padding: 60px 0; }
+        .section-title {
             font-size: 32px;
-            font-weight: 800;
-            color: var(--accent);
-            line-height: 1;
-        }
-        .countdown-label {
-            font-size: 12px;
-            color: var(--text2);
-            margin-top: 4px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
         }
         
         /* Features */
-        .section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 20px;
-        }
-        .section-title {
-            font-size: 40px;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        .section-subtitle {
-            font-size: 18px;
-            color: var(--text2);
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 60px;
-        }
-        .features-grid {
+        .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-top: 40px;
+            gap: 20px;
         }
         .feature {
             background: var(--card);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 16px;
-            padding: 32px;
-            transition: transform 0.2s, border-color 0.2s;
+            padding: 30px;
         }
-        .feature:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
-        }
-        .feature-icon {
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        .feature h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        .feature p {
-            color: var(--text2);
-            font-size: 15px;
-            line-height: 1.6;
-        }
+        .feature-icon { font-size: 32px; margin-bottom: 15px; }
+        .feature h3 { font-size: 18px; margin-bottom: 10px; }
+        .feature p { color: var(--text2); font-size: 14px; }
         
-        /* Testimonials */
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-top: 40px;
+        /* Price */
+        .price-box {
+            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.05));
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
         }
-        .testimonial {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            position: relative;
-        }
-        .testimonial::before {
-            content: "❝";
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 40px;
-            color: var(--accent);
-            opacity: 0.3;
-        }
-        .testimonial-text {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-        .testimonial-author {
+        .price { font-size: 56px; font-weight: 800; }
+        .price span { font-size: 20px; color: var(--text2); }
+        .price-desc { color: var(--text2); margin: 15px 0 25px; }
+        
+        /* What's Included */
+        .includes { text-align: left; max-width: 400px; margin: 0 auto; }
+        .includes li {
+            list-style: none;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .testimonial-avatar {
-            width: 40px;
-            height: 40px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-        .testimonial-info h4 {
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .testimonial-info p {
-            font-size: 14px;
-            color: var(--text2);
-        }
+        .includes li::before { content: "✓"; color: var(--green); font-weight: bold; }
         
-        /* Trust Badges */
-        .trust-badges {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 32px;
-            margin: 60px 0;
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
         }
-        .trust-badge {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        .trust-icon {
-            font-size: 32px;
-        }
-        .trust-text {
-            font-size: 12px;
-            color: var(--text2);
-            text-align: center;
-        }
-        
-        /* FAQ */
-        .faq {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .faq-item {
+        .testimonial {
             background: var(--card);
-            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 16px;
-            cursor: pointer;
+            padding: 25px;
         }
-        .faq-question {
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .faq-answer {
-            color: var(--text2);
-            margin-top: 16px;
-            font-size: 15px;
-            line-height: 1.6;
-            display: none;
-        }
-        .faq-item.active .faq-answer { display: block; }
+        .testimonial p { font-size: 14px; margin-bottom: 15px; }
+        .testimonial-author { font-weight: 600; font-size: 14px; }
         
         /* Footer */
         footer {
-            background: var(--bg2);
-            border-top: 1px solid var(--border);
-            padding: 60px 20px;
             text-align: center;
-        }
-        .footer-logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 24px;
-        }
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-        }
-        .footer-links a {
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
             color: var(--text2);
-            text-decoration: none;
             font-size: 14px;
-        }
-        .footer-copy {
-            color: var(--text2);
-            font-size: 13px;
         }
         
         /* Responsive */
-        @media(max-width: 768px) {
-            header { padding: 16px 20px; }
+        @media(max-width: 600px) {
             .nav { display: none; }
-            .hero { padding: 100px 20px 40px; }
-            .hero h1 { font-size: 36px; }
-            .video-preview { height: 300px; }
+            .hero { padding: 50px 0 40px; }
             .price-box { padding: 30px 20px; }
-            .price-current { font-size: 48px; }
-            .price-cta { padding: 20px 40px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <div class="logo">🦞 OpenClawSetup</div>
-        <nav class="nav">
-            <a href="#features">Features</a>
-            <a href="#curriculum">Curriculum</a>
-            <a href="#testimonials">Testimonials</a>
-            <a href="#faq">FAQ</a>
-        </nav>
-        <a href="#price" class="nav-cta">Buy Now →</a>
+        <div class="container">
+            <div class="logo">🦞 OpenClaw<span>Setup</span></div>
+            <nav class="nav">
+                <a href="#features">What's Included</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#testimonials">Reviews</a>
+            </nav>
+        </div>
     </header>
 
-    <!-- Hero -->
-    <section class="hero" id="hero">
-        <div class="hero-badge">🚀 LAUNCHING SATURDAY</div>
-        <h1>Master Your <span>Personal AI Assistant</span></h1>
-        <p class="hero-subtitle">2+ hours of step-by-step videos + complete PDF guide. Everything you need to set up OpenClaw with multiple models, skills, and automation.</p>
-        
-        <div class="video-preview">
-            <div class="video-preview-inner">
-                <div class="play-btn">▶️</div>
-                <div class="video-text">Course Preview — See exactly what you'll learn</div>
-            </div>
+    <section class="hero">
+        <div class="container">
+            <h1>Master Your <span>Personal AI Assistant</span></h1>
+            <p>2+ hours of step-by-step video tutorials + complete PDF guide. Everything you need to set up OpenClaw with multiple models and skills.</p>
+            <a href="https://buy.stripe.com/28E9AS65pfkGa5i5Kn9bO00" class="cta-btn">Get Instant Access — $25</a>
         </div>
     </section>
 
-    <!-- Price & CTA -->
-    <section class="section" id="price">
-        <div class="price-box">
-            <div class="price-badge">LIMITED TIME</div>
-            <div class="price-current">$25</div>
-            <div class="price-period">One-time payment</div>
-            
-            <div class="countdown" id="countdown">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="days">02</div>
-                    <div class="countdown-label">DAYS</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="hours">12</div>
-                    <div class="countdown-label">HOURS</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="minutes">45</div>
-                    <div class="countdown-label">MINUTES</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="seconds">30</div>
-                    <div class="countdown-label">SECONDS</div>
-                </div>
-            </div>
-            
-            <a href="https://buy.stripe.com/28E9AS65pfkGa5i5Kn9bO00" class="price-cta">Get Instant Access →</a>
-            <div class="guarantee">🔒 Secure payment • ⭐ 30-day money-back guarantee • 📧 Instant delivery</div>
-        </div>
-    </section>
-
-    <!-- Features -->
     <section class="section" id="features">
-        <h2 class="section-title">What You Get</h2>
-        <p class="section-subtitle">Everything you need to go from zero to AI assistant expert</p>
-        
-        <div class="features-grid">
-            <div class="feature">
-                <div class="feature-icon">🎥</div>
-                <h3>Complete Video Course</h3>
-                <p>2+ hours of step-by-step tutorials. Watch me set everything up from scratch.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">📄</div>
-                <h3>PDF Command Guide</h3>
-                <p>Every command, config, and shortcut in one printable reference sheet.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🧠</div>
-                <h3>Self-Improving AI Setup</h3>
-                <p>Configure the AI to learn from you and get smarter over time.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🔌</div>
-                <h3>10+ Essential Skills</h3>
-                <p>1Password, Calendar, Email, Smart Home, and more — all pre-configured.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">💬</div>
-                <h3>Multi-Channel Mastery</h3>
-                <p>Connect WhatsApp, Telegram, Discord, Slack, and more — one assistant everywhere.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🎙️</div>
-                <h3>Voice & Vision Setup</h3>
-                <p>Get voice conversations and computer vision working perfectly.</p>
+        <div class="container">
+            <h2 class="section-title">What's Included</h2>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🎥</div>
+                    <h3>2+ Hour Video Course</h3>
+                    <p>Step-by-step tutorials walking you through every feature. Watch and follow along.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📄</div>
+                    <h3>PDF Command Guide</h3>
+                    <p>Every command and shortcut in one handy reference sheet.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Self-Improving Setup</h3>
+                    <p>Configure AI that learns from you and gets smarter over time.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔌</div>
+                    <h3>10+ Essential Skills</h3>
+                    <p>1Password, Calendar, Email, Smart Home and more - all pre-configured.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💬</div>
+                    <h3>Multi-Channel Setup</h3>
+                    <p>WhatsApp, Telegram, Discord, Slack - your assistant everywhere.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎙️</div>
+                    <h3>Voice & Vision</h3>
+                    <p>Get voice commands and computer vision working perfectly.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials -->
+    <section class="section" id="pricing">
+        <div class="container">
+            <div class="price-box">
+                <h2>One-Time Payment</h2>
+                <div class="price">$25 <span>one-time</span></div>
+                <p class="price-desc">Get everything below, forever. No monthly fees.</p>
+                <ul class="includes">
+                    <li>2+ Hour Video Course</li>
+                    <li>PDF Command Guide</li>
+                    <li>10+ Skill Setups</li>
+                    <li>Multi-Channel Configuration</li>
+                    <li>Voice & Vision Setup</li>
+                    <li>Lifetime Access</li>
+                </ul>
+                <br>
+                <a href="https://buy.stripe.com/28E9AS65pfkGa5i5Kn9bO00" class="cta-btn">Get Instant Access</a>
+            </div>
+        </div>
+    </section>
+
     <section class="section" id="testimonials">
-        <h2 class="section-title">What Others Say</h2>
-        <p class="section-subtitle">Join hundreds who've transformed their workflow</p>
-        
-        <div class="testimonials-grid">
-            <div class="testimonial">
-                <div class="testimonial-text">
-                    "Saved me 10+ hours of trial and error. The PDF guide alone is worth the price."
+        <div class="container">
+            <h2 class="section-title">What Others Say</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p>"Saved me 10+ hours of trial and error. The PDF guide alone is worth the price."</p>
+                    <div class="testimonial-author">— James L., Developer</div>
                 </div>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">J</div>
-                    <div class="testimonial-info">
-                        <h4>James L.</h4>
-                        <p>Developer</p>
-                    </div>
+                <div class="testimonial">
+                    <p>"Finally got voice working after weeks of frustration. Perfect step-by-step guide."</p>
+                    <div class="testimonial-author">— Sarah T., Product Manager</div>
                 </div>
-            </div>
-            <div class="testimonial">
-                <div class="testimonial-text">
-                    "Finally got voice working after weeks of frustration. The video walkthrough was perfect."
-                </div>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">S</div>
-                    <div class="testimonial-info">
-                        <h4>Sarah T.</h4>
-                        <p>Product Manager</p>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial">
-                <div class="testimonial-text">
-                    "My AI assistant now handles my calendar and emails. This course paid for itself in a week."
-                </div>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">M</div>
-                    <div class="testimonial-info">
-                        <h4>Michael R.</h4>
-                        <p>Entrepreneur</p>
-                    </div>
+                <div class="testimonial">
+                    <p>"My AI assistant now handles my calendar and emails. Paid for itself in a week."</p>
+                    <div class="testimonial-author">— Michael R., Entrepreneur</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Trust Badges -->
-    <div class="section">
-        <div class="trust-badges">
-            <div class="trust-badge">
-                <div class="trust-icon">🔒</div>
-                <div class="trust-text">Secure Payment</div>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-icon">⏱️</div>
-                <div class="trust-text">Instant Access</div>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-icon">💸</div>
-                <div class="trust-text">30-Day Refund</div>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-icon">📧</div>
-                <div class="trust-text">Email Support</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- FAQ -->
-    <section class="section" id="faq">
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        
-        <div class="faq">
-            <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">Is this official? <span>+</span></div>
-                <div class="faq-answer">
-                    OpenClaw is free and open source. This course is an unofficial guide created to help you set it up quickly and correctly.
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">When do I get access? <span>+</span></div>
-                <div class="faq-answer">
-                    Immediately after payment. You'll get instant download links and can start watching right away.
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">What if I'm not technical? <span>+</span></div>
-                <div class="faq-answer">
-                    Perfect for beginners! We explain everything step-by-step with simple language. No coding experience needed.
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">Is there a refund? <span>+</span></div>
-                <div class="faq-answer">
-                    Yes! 30-day money-back guarantee. If you're not satisfied, email us for a full refund.
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">Can I share with friends? <span>+</span></div>
-                <div class="faq-answer">
-                    Each purchase is for one person. The videos are watermarked to prevent sharing. Support your fellow creators!
-                </div>
-            </div>
+    <section class="section">
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title">Ready to Get Started?</h2>
+            <p style="color: var(--text2); margin-bottom: 30px;">Join hundreds who've mastered their AI assistant.</p>
+            <a href="https://buy.stripe.com/28E9AS65pfkGa5i5Kn9bO00" class="cta-btn">Get Instant Access — $25</a>
         </div>
     </section>
 
-    <!-- Final CTA -->
-    <section class="section" style="padding-top: 0;">
-        <div class="price-box">
-            <h2 style="font-size: 32px; margin-bottom: 24px;">Ready to Master Your AI Assistant?</h2>
-            <div class="price-current" style="font-size: 60px;">$25</div>
-            <div class="price-period" style="margin-bottom: 32px;">One-time payment • 30-day guarantee</div>
-            <a href="https://buy.stripe.com/28E9AS65pfkGa5i5Kn9bO00" class="price-cta">Get The Complete Course →</a>
-            <div class="guarantee">⭐ 300+ students • ⏰ Limited time price</div>
-            <a href="https://buy.stripe.com/28E9AS65pfkGa5i5Kn9bO00" class="price-cta">Get Started Now →</a>
-            <div class="guarantee">🔒 Secure • ⭐ 30-day guarantee • 📧 Instant</div>
-        </div>
-    </section>
-
-    <!-- Footer -->
     <footer>
-        <div class="footer-logo">🦞 OpenClawSetup</div>
-        <div class="footer-links">
-            <a href="#features">Features</a>
-            <a href="#testimonials">Testimonials</a>
-            <a href="#faq">FAQ</a>
-            <a href="mailto:support@yourdomain.com">Contact</a>
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
-        </div>
-        <div class="footer-copy">
-            © 2026 OpenClaw Mastery Kit. Not affiliated with OpenClaw.
+        <div class="container">
+            <p>© 2026 OpenClaw Setup. Not affiliated with OpenClaw.</p>
         </div>
     </footer>
-
-    <script>
-        // Countdown to Saturday
-        function updateCountdown() {
-            const now = new Date();
-            const saturday = new Date();
-            saturday.setDate(now.getDate() + ((6 - now.getDay() + 7) % 7));
-            saturday.setHours(12, 0, 0, 0); // Saturday 12 PM
-            
-            const diff = saturday - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-        
-        // FAQ toggle
-        function toggleFAQ(item) {
-            item.classList.toggle('active');
-            const plus = item.querySelector('.faq-question span');
-            plus.textContent = item.classList.contains('active') ? '−' : '+';
-        }
-        
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if(target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-        
-        // Initialize
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    </script>
 </body>
 </html>
