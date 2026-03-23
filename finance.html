@@ -3,193 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💰 Finance Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Finance Tracker</title>
     <style>
-        :root { --bg: #0a0a0f; --card: #16161d; --card2: #1e1e28; --accent: #6366f1; --green: #10b981; --red: #ef4444; --text: #f4f4f5; --text2: #a1a1aa; --border: rgba(255,255,255,0.08); }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 100px; }
-        header { background: linear-gradient(180deg, #13131a 0%, transparent 100%); padding: 20px 20px 40px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px); }
-        header h1 { font-size: 24px; font-weight: 800; }
-        header p { color: var(--text2); font-size: 13px; margin-top: 4px; }
-        .card { background: var(--card); border-radius: 16px; padding: 20px; margin: 0 16px 16px; border: 1px solid var(--border); }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .card-title { font-size: 13px; color: var(--text2); font-weight: 500; text-transform: uppercase; }
-        .net-worth { font-size: 38px; font-weight: 800; color: var(--green); }
-        .change { font-size: 14px; margin-top: 8px; color: var(--green); }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 16px; }
-        .stat-card { background: var(--card); border-radius: 14px; padding: 16px; border: 1px solid var(--border); }
-        .stat-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
-        .stat-value { font-size: 20px; font-weight: 700; }
-        .stat-value.green { color: var(--green); }
-        .stat-value.red { color: var(--red); }
-        .actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 0 16px; }
-        .action-btn { background: var(--accent); border: none; border-radius: 12px; padding: 14px 8px; color: white; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .action-btn.secondary { background: var(--card2); }
-        .action-btn span { font-size: 22px; }
-        .section { margin-top: 24px; padding: 0 16px; }
-        .section-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
-        .list-item { background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
-        .list-item-left { display: flex; align-items: center; gap: 12px; }
-        .list-item-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; background: var(--card2); }
-        .list-item-title { font-weight: 600; font-size: 14px; }
-        .list-item-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
-        .list-item-right { text-align: right; }
-        .list-item-value { font-weight: 700; font-size: 14px; }
-        .list-item-change { font-size: 11px; margin-top: 2px; }
-        .list-item-change.up { color: var(--green); }
-        .list-item-change.down { color: var(--red); }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text2); text-decoration: none; font-size: 11px; padding: 8px 16px; border-radius: 10px; cursor: pointer; border: none; background: none; }
-        .nav-item.active { color: var(--accent); background: rgba(99,102,241,0.15); }
-        .nav-item span { font-size: 20px; }
-        
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: flex-end; justify-content: center; z-index: 200; }
-        .modal-overlay.active { display: flex; }
-        .modal { background: var(--card); width: 100%; max-width: 400px; border-radius: 24px 24px 0 0; padding: 24px; animation: slideUp 0.3s; }
-        @keyframes slideUp { from { transform: translateY(100%); } }
-        .modal h2 { font-size: 18px; margin-bottom: 16px; }
-        .modal input, .modal select { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px; color: var(--text); font-size: 16px; margin-bottom: 12px; }
-        .modal-buttons { display: flex; gap: 12px; margin-top: 16px; }
-        .modal-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; }
-        .modal-btn.primary { background: var(--accent); color: white; }
-        .modal-btn.secondary { background: var(--card2); color: var(--text); }
-        
-        .tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; }
-        .tab { white-space: nowrap; padding: 8px 16px; border-radius: 100px; font-size: 12px; font-weight: 600; background: var(--card); color: var(--text2); border: none; }
-        .tab.active { background: var(--accent); color: white; }
-        
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text2); }
-        .empty-state span { font-size: 40px; display: block; margin-bottom: 12px; }
-        
-        .view { display: none; }
-        .view.active { display: block; }
-        
-        .setting-item { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); cursor: pointer; }
-        .setting-item-left { display: flex; align-items: center; gap: 12px; }
-        .setting-item-icon { font-size: 20px; }
-        .setting-item-title { font-weight: 600; font-size: 14px; }
-        .setting-item-sub { font-size: 12px; color: var(--text2); }
-        
-        .delete-btn { background: var(--red); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; cursor: pointer; margin-left: 8px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #fff; padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 20px; color: #6366f1; }
+        .card { background: #16161d; border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid #333; }
+        .card h2 { font-size: 14px; color: #888; text-transform: uppercase; margin-bottom: 12px; }
+        .amount { font-size: 36px; font-weight: 700; }
+        .green { color: #10b981; }
+        .red { color: #ef4444; }
+        .btn { width: 100%; padding: 16px; background: #6366f1; border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 12px; cursor: pointer; }
+        .btn-secondary { background: #1e1e28; }
+        input { width: 100%; padding: 14px; background: #0a0a0f; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 16px; margin-bottom: 12px; }
+        .list-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #333; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: #16161d; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab { flex: 1; padding: 12px; background: #1e1e28; border: none; border-radius: 8px; color: #888; font-weight: 600; cursor: pointer; }
+        .tab.active { background: #6366f1; color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .stat { background: #1e1e28; padding: 16px; border-radius: 12px; text-align: center; }
+        .stat-label { font-size: 12px; color: #888; }
+        .stat-value { font-size: 20px; font-weight: 700; margin-top: 4px; }
     </style>
 </head>
 <body>
-    <!-- HOME VIEW -->
-    <div id="view-home" class="view active">
-        <header><h1>💰 Finance Tracker</h1><p id="date-display"></p></header>
-        <div class="card"><div class="card-header"><span class="card-title">Net Worth</span><span>💎</span></div>
-        <div class="net-worth" id="net-worth">$0</div>
-        <div class="change" id="net-worth-change">+$0 this month</div>
+    <div class="container">
+        <h1>💰 Finance Tracker</h1>
+        
+        <div class="card">
+            <h2>Net Worth</h2>
+            <div class="amount green" id="netWorth">$0</div>
         </div>
+        
         <div class="stats-grid">
-            <div class="stat-card"><div class="stat-label">Income (Week)</div><div class="stat-value green" id="weekly-income">$0</div></div>
-            <div class="stat-card"><div class="stat-label">Expenses (Week)</div><div class="stat-value red" id="weekly-expenses">$0</div></div>
-            <div class="stat-card"><div class="stat-label">Investments</div><div class="stat-value" id="investment-value">$0</div></div>
-            <div class="stat-card"><div class="stat-label">Savings Rate</div><div class="stat-value green" id="savings-rate">0%</div></div>
+            <div class="stat">
+                <div class="stat-label">Income</div>
+                <div class="stat-value green" id="totalIncome">$0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Expenses</div>
+                <div class="stat-value red" id="totalExpenses">$0</div>
+            </div>
         </div>
-        <div class="actions" style="margin-top: 20px;">
-            <button class="action-btn" onclick="openModal('income')"><span>💵</span>Add Income</button>
-            <button class="action-btn" onclick="openModal('expense')"><span>🛒</span>Add Expense</button>
-            <button class="action-btn secondary" onclick="openModal('investment')"><span>📈</span>Add Invest</button>
+        
+        <div style="margin-top: 20px;">
+            <button class="btn" onclick="openModal('income')">💵 Add Income</button>
+            <button class="btn btn-secondary" onclick="openModal('expense')">🛒 Add Expense</button>
+            <button class="btn btn-secondary" onclick="openModal('investment')">📈 Add Investment</button>
         </div>
-        <div class="section">
-            <div class="section-title">Recent Transactions</div>
-            <div id="transactions-list"></div>
+        
+        <div class="card" style="margin-top: 20px;">
+            <h2>Recent Transactions</h2>
+            <div id="transactions"></div>
         </div>
     </div>
-
-    <!-- INVEST VIEW -->
-    <div id="view-invest" class="view">
-        <header><h1>📊 Investments</h1><p>Your portfolio</p></header>
-        <div class="card">
-            <div class="card-header"><span class="card-title">Total Value</span><span>📈</span></div>
-            <div class="net-worth" id="invest-total">$0</div>
-            <div class="change" id="invest-gain">+$0 (0%)</div>
-        </div>
-        <div class="actions" style="margin-top: 20px;">
-            <button class="action-btn" onclick="openModal('investment')"><span>➕</span>Add Investment</button>
-            <button class="action-btn secondary" onclick="refreshPrices()"><span>🔄</span>Refresh Prices</button>
-        </div>
-        <div class="section">
-            <div class="section-title">Holdings</div>
-            <div id="portfolio-list"></div>
+    
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" style="margin-bottom: 20px;">Add</h2>
+            <input type="number" id="amount" placeholder="Amount ($)">
+            <input type="text" id="description" placeholder="Description">
+            <button class="btn" onclick="save()">Save</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
         </div>
     </div>
-
-    <!-- BUDGET VIEW -->
-    <div id="view-budget" class="view">
-        <header><h1>📝 Budget</h1><p>Track your spending</p></header>
-        <div class="card">
-            <div class="card-header"><span class="card-title">This Month</span><span>📅</span></div>
-            <div class="stats-grid">
-                <div><div class="stat-label">Income</div><div class="stat-value green" id="budget-income">$0</div></div>
-                <div><div class="stat-label">Expenses</div><div class="stat-value red" id="budget-expenses">$0</div></div>
-            </div>
-        </div>
-        <div class="actions" style="margin-top: 20px;">
-            <button class="action-btn" onclick="openModal('income')"><span>💵</span>Income</button>
-            <button class="action-btn" onclick="openModal('expense')"><span>🛒</span>Expense</button>
-        </div>
-        <div class="section">
-            <div class="section-title">By Category</div>
-            <div id="category-list"></div>
-        </div>
-    </div>
-
-    <!-- SETTINGS VIEW -->
-    <div id="view-settings" class="view">
-        <header><h1>⚙️ Settings</h1><p>Customize your app</p></header>
-        <div class="section">
-            <div class="setting-item" onclick="openModal('clear')">
-                <div class="setting-item-left"><span class="setting-item-icon">🗑️</span><div><div class="setting-item-title">Clear All Data</div><div class="setting-item-sub">Delete all transactions</div></div></div>
-            </div>
-            <div class="setting-item" onclick="exportData()">
-                <div class="setting-item-left"><span class="setting-item-icon">📤</span><div><div class="setting-item-title">Export Data</div><div class="setting-item-sub">Download as JSON</div></div></div>
-            </div>
-            <div class="setting-item" onclick="document.getElementById('import-file').click()">
-                <div class="setting-item-left"><span class="setting-item-icon">📥</span><div><div class="setting-item-title">Import Data</div><div class="setting-item-sub">Restore from backup</div></div></div>
-                <input type="file" id="import-file" style="display:none" onchange="importData(this)">
-            </div>
-            <div class="setting-item">
-                <div class="setting-item-left"><span class="setting-item-icon">👥</span><div><div class="setting-item-title">Share with Friends</div><div class="setting-item-sub">Coming soon</div></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" onclick="showView('home',this)"><span>🏠</span>Home</button>
-        <button class="nav-item" onclick="showView('invest',this)"><span>📊</span>Invest</button>
-        <button class="nav-item" onclick="showView('budget',this)"><span>📝</span>Budget</button>
-        <button class="nav-item" onclick="showView('settings',this)"><span>⚙️</span>Settings</button>
-    </nav>
-
-    <!-- MODAL -->
-    <div class="modal-overlay" id="modal">
-        <div class="modal">
-            <h2 id="modal-title">Add Transaction</h2>
-            <input type="number" id="modal-amount" placeholder="Amount ($)">
-            <input type="text" id="modal-desc" placeholder="Description">
-            <select id="modal-category" style="display:none;"></select>
-            <div class="modal-buttons">
-                <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
-                <button class="modal-btn primary" onclick="saveData()">Save</button>
-            </div>
-        </div>
-    </div>
-
+    
     <script>
         let data = { income: [], expenses: [], investments: [] };
         let currentType = '';
         
-        function loadData() {
+        function load() {
             const saved = localStorage.getItem('financeData');
             if (saved) data = JSON.parse(saved);
             render();
         }
         
-        function saveToStorage() {
+        function saveData() {
             localStorage.setItem('financeData', JSON.stringify(data));
             render();
         }
@@ -197,157 +90,59 @@
         function render() {
             const income = data.income.reduce((a,b) => a + b.amount, 0);
             const expenses = data.expenses.reduce((a,b) => a + b.amount, 0);
-            const investments = data.investments.reduce((a,b) => a + (b.quantity * b.currentPrice), 0);
-            const invested = data.investments.reduce((a,b) => a + (b.quantity * b.buyPrice), 0);
+            const investments = data.investments.reduce((a,b) => a + (b.amount || 0), 0);
             
-            const netWorth = income - expenses + investments;
-            const savingsRate = income > 0 ? ((income - expenses) / income * 100) : 0;
+            document.getElementById('netWorth').textContent = '$' + (income - expenses + investments).toLocaleString();
+            document.getElementById('totalIncome').textContent = '$' + income.toLocaleString();
+            document.getElementById('totalExpenses').textContent = '$' + expenses.toLocaleString();
             
-            document.getElementById('net-worth').textContent = '$' + netWorth.toLocaleString();
-            document.getElementById('net-worth-change').textContent = income > expenses ? '↑ Good savings!' : '↓ Need to save more';
-            document.getElementById('weekly-income').textContent = '$' + income.toLocaleString();
-            document.getElementById('weekly-expenses').textContent = '$' + expenses.toLocaleString();
-            document.getElementById('investment-value').textContent = '$' + investments.toLocaleString();
-            document.getElementById('savings-rate').textContent = savingsRate.toFixed(0) + '%';
+            const all = [...data.income.map(i => ({...i, type: 'income'})].concat(...data.expenses.map(e => ({...e, type: 'expense'})));
+            all.sort((a,b) => new Date(b.date) - new Date(a.date));
             
-            // Invest view
-            document.getElementByinvest-total').textContent = '$' + investments.toLocaleString();
-            const gain = investments - invested;
-            const gainPct = invested > 0 ? (gain / invested * 100) : 0;
-            document.getElementById('invest-gain').textContent = (gain >= 0 ? '+' : '') + '$' + gain.toLocaleString() + ' (' + gainPct.toFixed(1) + '%)';
-            document.getElementById('invest-gain').style.color = gain >= 0 ? 'var(--green)' : 'var(--red)';
-            
-            // Budget view
-            document.getElementById('budget-income').textContent = '$' + income.toLocaleString();
-            document.getElementById('budget-expenses').textContent = '$' + expenses.toLocaleString();
-            
-            // Portfolio list
-            const pl = document.getElementById('portfolio-list');
-            if (data.investments.length === 0) {
-                pl.innerHTML = '<div class="empty-state"><span>📈</span>No investments yet</div>';
-            } else {
-                pl.innerHTML = data.investments.map((inv, i) => {
-                    const val = inv.quantity * inv.currentPrice;
-                    const gain = ((inv.currentPrice - inv.buyPrice) / inv.buyPrice * 100);
-                    return '<div class="list-item"><div class="list-item-left"><div class="list-item-icon">📈</div><div><div class="list-item-title">'+inv.name+'</div><div class="list-item-sub">'+inv.quantity+' @ $'+inv.buyPrice+'</div></div></div><div class="list-item-right"><div class="list-item-value">$'+val.toLocaleString()+'</div><div class="list-item-change '+(gain>=0?'up':'down')+'">'+(gain>=0?'+':'')+gain.toFixed(1)+'%</div><button class="delete-btn" onclick="deleteInvest('+i+')">✕</button></div></div>';
-                }).join('');
-            }
-            
-            // Transactions
-            const tl = document.getElementById('transactions-list');
-            const all = [...data.income.map(i => ({...i, type:'income'})), ...data.expenses.map(e => ({...e, type:'expense'}))].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0,5);
+            const list = document.getElementById('transactions');
             if (all.length === 0) {
-                tl.innerHTML = '<div class="empty-state"><span>📝</span>No transactions yet</div>';
+                list.innerHTML = '<p style="color:#666;text-align:center;">No transactions yet</p>';
             } else {
-                tl.innerHTML = all.map(t => {
-                    const icon = t.type === 'income' ? '💵' : '🛒';
-                    const val = (t.type === 'income' ? '+' : '-') + '$' + t.amount;
-                    return '<div class="list-item"><div class="list-item-left"><div class="list-item-icon">'+icon+'</div><div><div class="list-item-title">'+t.desc+'</div><div class="list-item-sub">'+new Date(t.date).toLocaleDateString()+'</div></div></div><div class="list-item-right"><div class="list-item-value '+(t.type==='income'?'green':'red')+'">'+val+'</div></div></div>';
-                }).join('');
+                list.innerHTML = all.slice(0,10).map(t => `
+                    <div class="list-item">
+                        <div>
+                            <div style="font-weight:600">${t.desc || 'Transaction'}</div>
+                            <div style="font-size:12px;color:#666">${new Date(t.date).toLocaleDateString()}</div>
+                        </div>
+                        <div style="font-weight:700;${t.type === 'income' ? 'color:#10b981' : 'color:#ef4444'}">
+                            ${t.type === 'income' ? '+' : '-'}$${t.amount.toLocaleString()}
+                        </div>
+                    </div>
+                `).join('');
             }
-            
-            // Categories
-            const cats = {};
-            data.expenses.forEach(e => { cats[e.category||'Other'] = (cats[e.category||'Other']||0) + e.amount; });
-            const cl = document.getElementById('category-list');
-            if (Object.keys(cats).length === 0) {
-                cl.innerHTML = '<div class="empty-state"><span>📊</span>No expenses yet</div>';
-            } else {
-                cl.innerHTML = Object.entries(cats).map(([cat, amt]) => '<div class="list-item"><div class="list-item-left"><div class="list-item-icon">📊</div><div class="list-item-title">'+cat+'</div></div><div class="list-item-right"><div class="list-item-value red">$'+amt.toLocaleString()+'</div></div></div>').join('');
-            }
-        }
-        
-        function showView(view, btn) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById('view-' + view).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
         }
         
         function openModal(type) {
             currentType = type;
+            document.getElementById('modalTitle').textContent = type === 'income' ? 'Add Income' : type === 'expense' ? 'Add Expense' : 'Add Investment';
+            document.getElementById('amount').value = '';
+            document.getElementById('description').value = '';
             document.getElementById('modal').classList.add('active');
-            document.getElementById('modal-amount').value = '';
-            document.getElementById('modal-desc').value = '';
-            const cat = document.getElementById('modal-category');
-            if (type === 'expense') {
-                cat.style.display = 'block';
-                cat.innerHTML = '<option value="">Select Category</option><option value="Food">Food</option><option value="Transport">Transport</option><option value="Housing">Housing</option><option value="Entertainment">Entertainment</option><option value="Shopping">Shopping</option><option value="Other">Other</option>';
-            } else {
-                cat.style.display = 'none';
-            }
-            document.getElementById('modal-title').textContent = type === 'income' ? 'Add Income' : type === 'expense' ? 'Add Expense' : type === 'clear' ? 'Clear All Data?' : 'Add Investment';
         }
         
         function closeModal() {
             document.getElementById('modal').classList.remove('active');
         }
         
-        function saveData() {
-            if (currentType === 'clear') {
-                if (confirm('Delete all data? This cannot be undone.')) {
-                    data = { income: [], expenses: [], investments: [] };
-                    saveToStorage();
-                }
-                closeModal();
-                return;
-            }
+        function save() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const desc = document.getElementById('description').value;
+            if (!amount) return alert('Enter amount');
             
-            const amount = parseFloat(document.getElementById('modal-amount').value);
-            const desc = document.getElementById('modal-desc').value || 'Transaction';
-            const category = document.getElementById('modal-category').value;
-            if (!amount) return alert('Please enter an amount');
+            if (currentType === 'income') data.income.push({ amount, desc, date: new Date().toISOString() });
+            else if (currentType === 'expense') data.expenses.push({ amount, desc, date: new Date().toISOString() });
+            else data.investments.push({ amount, desc, date: new Date().toISOString() });
             
-            if (currentType === 'income') {
-                data.income.push({ amount, desc, date: new Date().toISOString() });
-            } else if (currentType === 'expense') {
-                data.expenses.push({ amount, desc, category, date: new Date().toISOString() });
-            } else {
-                data.investments.push({ name: desc, quantity: 1, buyPrice: amount, currentPrice: amount });
-            }
-            
-            saveToStorage();
+            saveData();
             closeModal();
         }
         
-        function deleteInvest(i) {
-            if (confirm('Delete this investment?')) {
-                data.investments.splice(i, 1);
-                saveToStorage();
-            }
-        }
-        
-        function refreshPrices() {
-            alert('Price refresh would connect to a stock API. Coming soon!');
-        }
-        
-        function exportData() {
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'finance-backup-' + new Date().toISOString().split('T')[0] + '.json';
-            a.click();
-        }
-        
-        function importData(input) {
-            const file = input.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    data = JSON.parse(e.target.result);
-                    saveToStorage();
-                    alert('Data imported!');
-                } catch(err) {
-                    alert('Invalid file');
-                }
-            };
-            reader.readAsText(file);
-        }
-        
-        document.getElementById('date-display').textContent = new Date().toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        
-        loadData();
+        load();
     </script>
 </body>
 </html>
